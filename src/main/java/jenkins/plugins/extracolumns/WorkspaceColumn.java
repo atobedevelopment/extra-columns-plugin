@@ -26,6 +26,7 @@ package jenkins.plugins.extracolumns;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 import hudson.Extension;
+import hudson.model.AbstractItem;
 import hudson.views.ListViewColumn;
 import hudson.views.ListViewColumnDescriptor;
 
@@ -39,6 +40,16 @@ public class WorkspaceColumn extends ListViewColumn {
     @DataBoundConstructor
     public WorkspaceColumn() {
         super();
+    }
+
+    public boolean isPipelineJob(AbstractItem item) {
+        String simpleName = item.getClass().getSimpleName();
+        return "WorkflowJob".equals(simpleName);
+    }
+
+    public boolean showWorkspace(AbstractItem item) {
+        String simpleName = item.getClass().getSimpleName();
+        return !"Folder".equals(simpleName) && !"MatrixProject".equals(simpleName) && !"WorkflowMultiBranchProject".equals(simpleName);
     }
 
     /**
